@@ -1,0 +1,32 @@
+server:
+  port: 8081
+  session:
+    timeout: 30 # session最大超时时间(分钟)，默认为30
+
+
+spring:
+  profiles:
+    active: dev
+
+
+  output:
+    ansi:
+      enabled: always
+  aop:
+    auto: true
+    proxy-target-class: false
+
+
+security:
+  basic:
+    enabled: false
+
+
+#分页设置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+

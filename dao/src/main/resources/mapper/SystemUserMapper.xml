@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.igetwell.system.mapper.SystemUserMapper">
+
+  <select id="getSystemUsers" resultType="org.igetwell.system.dto.SystemUserDTO" parameterType="Integer">
+    SELECT U.ID AS systemUserId, U.USERNAME AS username, O.ID AS officeId, O.NAME AS officeName,
+    D.ID AS deptId , D.NAME AS deptName, P.ID AS positionId,
+    P.NAME AS positionName FROM SYSTEM_USER AS U
+    INNER JOIN SYSTEM_POSTION AS P ON P.ID = U.SYSTEM_POSITION_ID
+    INNER JOIN SYSTEM_DEPART AS D ON D.ID = P.SYSTEM_DEPART_ID
+    INNER JOIN SYSTEM_OFFICE AS O ON O.ID = D.SYSTEM_OFFICE_ID
+    WHERE O.ID = #{office}
+  </select>
+</mapper>

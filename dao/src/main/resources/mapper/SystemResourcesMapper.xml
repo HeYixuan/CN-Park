@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.igetwell.system.mapper.SystemResourcesMapper">
+  <resultMap id="BaseResultMap" type="org.igetwell.system.domain.SystemResources">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="action" jdbcType="CHAR" property="action" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="descritpion" jdbcType="VARCHAR" property="descritpion" />
+    <result column="clazz" jdbcType="VARCHAR" property="clazz" />
+  </resultMap>
+</mapper>

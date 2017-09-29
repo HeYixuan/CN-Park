@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.igetwell.system.mapper.SystemOfficeMapper">
+  <resultMap id="BaseResultMap" type="org.igetwell.system.domain.SystemOffice">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+
+  <!--根据机构ID查询机构所有部门-->
+  <select id="getDepts" resultType="org.igetwell.system.domain.SystemDepart" parameterType="Integer">
+  </select>
+
+  <!--根据机构ID查询机构所有职位-->
+  <select id="getPositions" resultType="org.igetwell.system.domain.SystemPostion" parameterType="Integer">
+  </select>
+
+</mapper>

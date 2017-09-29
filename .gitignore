@@ -4,6 +4,7 @@ target/
 .gradle/
 .idea/
 gradle/
+classes/
 .idea
 *.iml
 

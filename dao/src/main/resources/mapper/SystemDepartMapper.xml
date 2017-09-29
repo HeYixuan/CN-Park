@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.igetwell.system.mapper.SystemDepartMapper">
+
+   <!--1、查询和机构关联的部门-->
+  <select id="getListByOffice" resultType="org.igetwell.system.domain.SystemDepart" parameterType="Integer">
+  SELECT * FROM SYSTEM_DEPART AS D
+  INNER JOIN SYSTEM_OFFICE O ON O.ID = D.SYSTEM_OFFICE_ID
+  WHERE D.SYSTEM_OFFICE_ID = #{office};
+  </select>
+
+  <!--2、查询开发部门的子部门 非递归-->
+  <select id="getChildren" resultType="org.igetwell.system.domain.SystemDepart" parameterType="Integer">
+  SELECT T2.* FROM SYSTEM_DEPART AS T1
+  INNER JOIN SYSTEM_DEPART AS T2 ON T2.PARENT_ID = T1.ID
+  WHERE T1.ID= #{parentId};
+  </select>
+
+  <!--2、根据某个部门ID查询部门所有部门(递归)-->
+  <select id="getChildrenList" resultType="org.igetwell.system.domain.SystemDepart" parameterType="Integer">
+    SELECT * FROM SYSTEM_DEPART AS T1
+    WHERE FIND_IN_SET(T1.ID, FN_DEPART_CHILD_LIST(#{parentId}));
+  </select>
+
+
+  <!--4、根据某个部门ID查询部门所有部门用户归属机构和部门(递归)-->
+  <select id="getSystemUserList" resultType="org.igetwell.system.domain.SystemDepart" parameterType="Integer">
+  SELECT U.ID, U.USERNAME, D.ID AS DEPART_ID, D.`NAME` AS DEPART_NAME, O.ID AS OFFICE_ID, O.`NAME` AS OFFICE_NAME
+  FROM SYSTEM_USER AS U
+  INNER JOIN SYSTEM_DEPART AS D ON D.ID = U.SYSTEM_DEPART_ID
+  INNER JOIN SYSTEM_OFFICE AS O ON O.ID = D.SYSTEM_OFFICE_ID
+  WHERE U.SYSTEM_DEPART_ID IN (
+    SELECT T1.ID from SYSTEM_DEPART AS T1
+    WHERE FIND_IN_SET(T1.ID, FN_DEPART_CHILD_LIST(#{parentId}))
+  );
+  </select>
+
+</mapper>
