@@ -3,6 +3,11 @@ server:
   session:
     timeout: 30 # session最大超时时间(分钟)，默认为30
 
+jwt:
+  header: X-API-TOKEN
+  secret: secret
+  issuer: 15517551511@126.com
+  expiration: 120   #Token有效期30分钟
 
 spring:
   profiles:

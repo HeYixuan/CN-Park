@@ -9,4 +9,17 @@
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
   </resultMap>
+
+  <!--根据系统用户ID查询用户所拥有的角色-->
+  <select id="loadByUser" resultType="org.igetwell.system.domain.SystemRole" parameterType="Integer">
+    SELECT R.NAME FROM SYSTEM_ROLE R,SYSTEM_USER_ROLE UR
+    WHERE R.ID = UR.SYSTEM_ROLE_ID
+    AND UR.SYSTEM_USER_ID = #{user}
+  </select>
+
+  <!--查询所有的角色-->
+  <select id="getList" resultType="org.igetwell.system.domain.SystemRole" parameterType="Integer">
+    SELECT * FROM SYSTEM_ROLE;
+  </select>
+
 </mapper>

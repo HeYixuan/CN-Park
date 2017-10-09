@@ -36,8 +36,6 @@ buildscript {
 
 dependencies {
     // 依赖 core 模块
-    compile project(":common-util")
-    compile project(":dao")
     compile project(":core")
 
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"

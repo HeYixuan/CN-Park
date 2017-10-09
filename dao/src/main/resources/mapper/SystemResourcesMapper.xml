@@ -13,4 +13,19 @@
     <result column="descritpion" jdbcType="VARCHAR" property="descritpion" />
     <result column="clazz" jdbcType="VARCHAR" property="clazz" />
   </resultMap>
+
+  <select id="loadByRole" resultType="org.igetwell.system.domain.SystemResources" parameterType="Integer">
+    SELECT S.* FROM SYSTEM_RESOURCES AS S,SYSTEM_ROLE_RESOURCE AS RS
+    WHERE RS.SYSTEM_RESOURCE_ID = S.ID
+    AND RS.SYSTEM_ROLE_ID = #{role};
+  </select>
+
+  <select id="getList" resultType="org.igetwell.system.domain.SystemResources">
+    SELECT * FROM SYSTEM_RESOURCES AS R;
+  </select>
+
+  <select id="getUnBingList" resultType="org.igetwell.system.domain.SystemResources">
+    SELECT * FROM SYSTEM_RESOURCES WHERE ID NOT IN (SELECT DISTINCT SYSTEM_RESOURCE_ID FROM SYSTEM_ROLE_RESOURCE)
+  </select>
+
 </mapper>
