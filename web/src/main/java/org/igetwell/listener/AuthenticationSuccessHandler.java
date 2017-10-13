@@ -1,5 +1,7 @@
 package org.igetwell.listener;
 
+import org.apache.commons.lang3.StringUtils;
+import org.igetwell.common.constans.HttpStatus;
 import org.igetwell.common.util.JwtTokenUtil;
 import org.igetwell.system.dto.JwtUser;
 import org.igetwell.system.dto.SystemUserDTO;
@@ -30,11 +32,38 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         String jwtToken = jwtTokenUtil.createToken(authentication.getName());
         response.setHeader("X-API-TOKEN", "Bearer " + jwtToken);
-        System.err.println("userDetail["+authentication.getDetails()+"]");
+        String ipAddress= getIPAddress(request);
+        System.err.println("userDetail["+authentication.getDetails()+"],真实IP是：[" + ipAddress + "]");
         SystemUserDTO dto = iSystemUserService.get(authentication.getName());
         JwtUser jwtUser = JwtUser.build(authentication.getName(), dto.getOfficeName(), dto.getDeptName(), dto.getPositionName(), authentication.getAuthorities());
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setStatus(HttpStatus.OK.value());
         response.getWriter().write(JsonMapper.INSTANCE.toJson(jwtUser));
         //super.onAuthenticationSuccess(request, response, authentication);
+    }
+
+    public static final String getIPAddress(final HttpServletRequest request) throws ServletException {
+        if (request == null) {
+            throw (new ServletException("getIPAddress method HttpServletRequest Object is null"));
+        }
+        String ipString = request.getHeader("x-forwarded-for");
+        if (StringUtils.isBlank(ipString) || "unknown".equalsIgnoreCase(ipString)) {
+            ipString = request.getHeader("Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(ipString) || "unknown".equalsIgnoreCase(ipString)){
+            ipString = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(ipString) || "unknown".equalsIgnoreCase(ipString)){
+            ipString = request.getRemoteAddr();
+        }
+
+        // 多个路由时，取第一个非unknown的ip
+        final String[] arr = ipString.split(",");
+        for (final String str : arr) {
+            if (!"unknown".equalsIgnoreCase(str)){
+                ipString = str;
+                break;
+            }
+        }
+        return ipString;
     }
 }

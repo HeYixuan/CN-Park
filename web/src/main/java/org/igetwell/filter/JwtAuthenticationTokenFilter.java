@@ -1,6 +1,7 @@
 package org.igetwell.filter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.igetwell.common.constans.HttpStatus;
 import org.igetwell.common.constans.MobilePlatform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,14 +57,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         if (StringUtils.isBlank(header) || !header.startsWith(TOKEN_PREFIX)){
             logger.error("Request header X-API-TOKEN is empty");
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
             return;
         }
 
         // 校验平台和接口版本号，校验平台取值
         if(StringUtils.isBlank(version) || StringUtils.isBlank(device) || !MobilePlatform.contains(device)){
             logger.error("Request header X-Version or X-Device is empty");
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
             return;
         }
 
@@ -78,7 +79,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 logger.info("authenticated user " + username + ", setting security context");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }else{
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 response.getWriter().print("Invalid token error.");
                 return ;
             }
